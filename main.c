@@ -9,7 +9,7 @@ void test_graph_node();
 
 void test_graph();
 
-void test_generate();
+void test_generate(unsigned int intended_vertex_count, unsigned int neighbor_min, unsigned int neighbor_max);
 
 void test_graph_read();
 
@@ -17,9 +17,11 @@ int main() {
     int REPEAT_COUNT = 1000;
     test_graph_node();
     test_graph();
-    for (int i = 0; i < REPEAT_COUNT; i++) {
-        test_generate();
-    }
+//    for (int i = 0; i < REPEAT_COUNT; i++) {
+//        test_generate(20, 2, 10);
+//    }
+
+    test_generate(3000, 40, 200);
     test_graph_read();
 
     return 0;
@@ -69,10 +71,7 @@ void test_graph() {
     graph_free(graph);
 }
 
-void test_generate() {
-    unsigned int intended_vertex_count = 20;
-    unsigned int neighbor_min = 2;
-    unsigned int neighbor_max = 12;
+void test_generate(unsigned int intended_vertex_count, unsigned int neighbor_min, unsigned int neighbor_max) {
     graph_t graph = generate(intended_vertex_count, neighbor_min, neighbor_max);
     assert(graph != NULL);
     unsigned int vertex_count = graph_get_vertex_count(graph);
@@ -84,10 +83,10 @@ void test_generate() {
 //        graph_node_print(graph_get_adj_list(graph, i));
 //        printf("\n");
 //        printf("Length: %d\n", length);
-        assert(length >= neighbor_min && length <= neighbor_max);
+        assert(graph_edge_not_exists(graph, i, i));
+        assert(length <= neighbor_max);
+        assert(length >= neighbor_min);
     }
-
-    graph_print(graph);
 
     graph_free(graph);
 }
