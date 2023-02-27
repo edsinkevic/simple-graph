@@ -43,10 +43,6 @@ void graph_add_edge(graph_t graph, unsigned int from, unsigned int to) {
     graph_node_t node = graph_node_create(to);
     graph_node_set_next(node, graph->adj_lists[from]);
     graph->adj_lists[from] = node;
-
-    node = graph_node_create(from);
-    graph_node_set_next(node, graph->adj_lists[to]);
-    graph->adj_lists[to] = node;
 }
 
 void graph_print(graph_t graph) {

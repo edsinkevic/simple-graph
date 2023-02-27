@@ -53,12 +53,18 @@ void test_graph() {
 
     graph_add_edge(graph, from, to);
     graph_node_t from_node = graph_get_adj_list(graph, from);
-    graph_node_t to_node = graph_get_adj_list(graph, to);
+    graph_node_t to_node_empty = graph_get_adj_list(graph, to);
     assert(graph_node_get_vertex(from_node) == to);
-    assert(graph_node_get_vertex(to_node) == from);
     assert(graph_get_adj_list_length(graph, 0) == 1);
+    assert(graph_get_adj_list_length(graph, 1) == 0);
+    assert(graph_node_is_empty(to_node_empty));
+
+    graph_add_edge(graph, to, from);
+    graph_node_t to_node = graph_get_adj_list(graph, to);
+    assert(graph_node_get_vertex(to_node) == from);
     assert(graph_get_adj_list_length(graph, 1) == 1);
     assert(graph_edge_exists(graph, from, to));
+    assert(graph_edge_exists(graph, to, from));
 
     graph_free(graph);
 }
@@ -66,7 +72,7 @@ void test_graph() {
 void test_generate() {
     unsigned int intended_vertex_count = 20;
     unsigned int neighbor_min = 2;
-    unsigned int neighbor_max = 5;
+    unsigned int neighbor_max = 12;
     graph_t graph = generate(intended_vertex_count, neighbor_min, neighbor_max);
     assert(graph != NULL);
     unsigned int vertex_count = graph_get_vertex_count(graph);
@@ -80,6 +86,8 @@ void test_generate() {
 //        printf("Length: %d\n", length);
         assert(length >= neighbor_min && length <= neighbor_max);
     }
+
+    graph_print(graph);
 
     graph_free(graph);
 }
