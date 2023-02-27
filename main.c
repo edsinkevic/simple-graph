@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <assert.h>
 #include "graph.h"
-#include "generate.h"
+#include "graph_generate.h"
 #include "graph_node.h"
 #include "graph_read.h"
 
@@ -17,11 +17,11 @@ int main() {
     int REPEAT_COUNT = 1000;
     test_graph_node();
     test_graph();
-//    for (int i = 0; i < REPEAT_COUNT; i++) {
-//        test_generate(20, 2, 10);
-//    }
+    for (int i = 0; i < REPEAT_COUNT; i++) {
+        test_generate(20, 2, 10);
+    }
 
-    test_generate(3000, 40, 200);
+    test_generate(3000, 40, 500);
     test_graph_read();
 
     return 0;
@@ -72,7 +72,7 @@ void test_graph() {
 }
 
 void test_generate(unsigned int intended_vertex_count, unsigned int neighbor_min, unsigned int neighbor_max) {
-    graph_t graph = generate(intended_vertex_count, neighbor_min, neighbor_max);
+    graph_t graph = graph_generate(intended_vertex_count, neighbor_min, neighbor_max);
     assert(graph != NULL);
     unsigned int vertex_count = graph_get_vertex_count(graph);
     assert(vertex_count == intended_vertex_count);
