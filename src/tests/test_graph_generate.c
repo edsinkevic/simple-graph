@@ -8,7 +8,7 @@
 #include "graph.h"
 #include "graph_generate.h"
 
-void test_generate(unsigned int intended_vertex_count, unsigned int neighbor_min, unsigned int neighbor_max) {
+void test_graph_generate(unsigned int intended_vertex_count, unsigned int neighbor_min, unsigned int neighbor_max) {
     graph_t graph = graph_generate(intended_vertex_count, neighbor_min, neighbor_max);
     assert(graph != NULL);
     unsigned int vertex_count = graph_get_vertex_count(graph);
