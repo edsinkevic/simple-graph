@@ -40,4 +40,7 @@ void test_graph_read() {
     assert(graph_edge_exists(graph, 5, 3));
 
     assert(graph_edge_exists(graph, 6, 3));
+
+    graph_print(graph);
+    graph_free(graph);
 }

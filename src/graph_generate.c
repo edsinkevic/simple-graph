@@ -96,4 +96,3 @@ unsigned int random_number_between(unsigned int from, unsigned int to, FILE *dev
 
     return from + (random_uint(length, dev_random_file_handle));
 }
-

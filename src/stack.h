@@ -16,6 +16,7 @@ int stack_push(stack_t stack, unsigned int to_push);
 void stack_free(stack_t stack);
 
 int stack_is_empty(stack_t stack);
+
 int stack_is_not_empty(stack_t stack);
 
 #endif //LAB_1_STACK_H

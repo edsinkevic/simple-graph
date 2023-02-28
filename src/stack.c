@@ -4,20 +4,16 @@
 
 #include <malloc.h>
 #include "stack.h"
-
-struct stack_node_instance_t {
-    unsigned int value;
-    struct stack_node_instance_t *next;
-};
+#include "linked_list.h"
 
 struct stack_instance_t {
-    struct stack_node_instance_t *head;
+    linked_list_t head;
 };
 
 
 stack_t stack_create() {
     stack_t stack = malloc(sizeof *stack);
-    stack->head = NULL;
+    stack->head = linked_list_create();
 
     return stack;
 }
@@ -26,31 +22,23 @@ int stack_pop(stack_t stack, unsigned int *popped_ptr) {
     if (stack_is_empty(stack))
         return 0;
 
-    *popped_ptr = stack->head->value;
-    struct stack_node_instance_t *temp = stack->head;
-    stack->head = stack->head->next;
+    if (linked_list_pop_head(stack->head, popped_ptr))
+        return 1;
 
-    free(temp);
-
-    return 1;
+    return 0;
 }
 
 int stack_push(stack_t stack, unsigned int to_push) {
     if (stack == NULL)
         return 0;
 
-    struct stack_node_instance_t *node = malloc(sizeof *node);
-
-    node->value = to_push;
-    node->next = stack->head;
-
-    stack->head = node;
+    linked_list_append(stack->head, to_push);
 
     return 1;
 }
 
 int stack_is_empty(stack_t stack) {
-    return stack == NULL || stack->head == NULL ? 1 : 0;
+    return stack == NULL || stack->head == NULL || linked_list_is_empty(stack->head) ? 1 : 0;
 }
 
 int stack_is_not_empty(stack_t stack) {
@@ -61,13 +49,6 @@ void stack_free(stack_t stack) {
     if (stack == NULL)
         return;
 
-    struct stack_node_instance_t *head = stack->head;
-
-    while (head != NULL) {
-        struct stack_node_instance_t *temp = head;
-        head = head->next;
-        free(temp);
-    }
-
+    linked_list_free(stack->head);
     free(stack);
 }

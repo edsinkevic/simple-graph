@@ -5,12 +5,12 @@
 #include <stddef.h>
 #include <malloc.h>
 #include "graph.h"
-#include "graph_node.h"
+#include "linked_list.h"
 
 
 struct graph_instance_t {
     unsigned int vertices_count;
-    graph_node_t *adj_lists;
+    linked_list_t *adj_lists;
 };
 
 graph_t graph_create(unsigned int size) {
@@ -19,7 +19,7 @@ graph_t graph_create(unsigned int size) {
     graph->adj_lists = malloc(size * sizeof(graph->adj_lists));
 
     for (int i = 0; i < size; i++) {
-        graph->adj_lists[i] = NULL;
+        graph->adj_lists[i] = linked_list_create();
     }
     return graph;
 }
@@ -30,7 +30,7 @@ void graph_free(graph_t graph) {
         return;
 
     for (int i = 0; i < graph->vertices_count; i++)
-        graph_node_free(graph->adj_lists[i]);
+        linked_list_free(graph->adj_lists[i]);
 
     free(graph->adj_lists);
     free(graph);
@@ -40,15 +40,13 @@ void graph_add_edge(graph_t graph, unsigned int from, unsigned int to) {
     if (graph_edge_exists(graph, from, to))
         return;
 
-    graph_node_t node = graph_node_create(to);
-    graph_node_set_next(node, graph->adj_lists[from]);
-    graph->adj_lists[from] = node;
+    linked_list_append(graph->adj_lists[from], to);
 }
 
 void graph_print(graph_t graph) {
     for (int i = 0; i < graph->vertices_count; i++) {
         printf("Vertex %d: ", i);
-        graph_node_print(graph->adj_lists[i]);
+        linked_list_print(graph->adj_lists[i]);
         printf("\n");
     }
     printf("\n");
@@ -58,7 +56,7 @@ unsigned int graph_get_vertex_count(graph_t graph) {
     return graph->vertices_count;
 }
 
-graph_node_t graph_get_adj_list(graph_t graph, unsigned int index) {
+linked_list_t graph_get_adj_list(graph_t graph, unsigned int index) {
     if (graph_is_empty(graph))
         return NULL;
 
@@ -72,7 +70,7 @@ unsigned int graph_get_adj_list_length(graph_t graph, unsigned int index) {
     if (graph_is_empty(graph))
         return 0;
 
-    return graph_node_length(graph_get_adj_list(graph, index));
+    return linked_list_length(graph_get_adj_list(graph, index));
 }
 
 int graph_edge_exists(graph_t graph, unsigned int in, unsigned int vertex) {
@@ -80,12 +78,12 @@ int graph_edge_exists(graph_t graph, unsigned int in, unsigned int vertex) {
         return -1;
 
 
-    graph_node_t adj_list = graph_get_adj_list(graph, in);
+    linked_list_t adj_list = graph_get_adj_list(graph, in);
 
-    if (graph_node_is_empty(adj_list))
+    if (linked_list_is_empty(adj_list))
         return 0;
 
-    return graph_node_vertex_exists(adj_list, vertex);
+    return linked_list_value_exists(adj_list, vertex);
 }
 
 int graph_edge_not_exists(graph_t graph, unsigned int in, unsigned int vertex) {
@@ -99,7 +97,7 @@ void graph_increase_size(graph_t graph, unsigned int required_size) {
     graph->adj_lists = realloc(graph->adj_lists, required_size * sizeof(graph->adj_lists));
 
     for (unsigned int i = graph_get_vertex_count(graph); i < required_size; i++) {
-        graph->adj_lists[i] = NULL;
+        graph->adj_lists[i] = linked_list_create();
     }
 
     graph->vertices_count = required_size;

@@ -5,7 +5,7 @@
 #ifndef LAB_1_GRAPH_H
 #define LAB_1_GRAPH_H
 
-#include "graph_node.h"
+#include "linked_list.h"
 
 typedef struct graph_instance_t *graph_t;
 
@@ -19,7 +19,7 @@ void graph_print(graph_t);
 
 unsigned int graph_get_vertex_count(graph_t);
 
-graph_node_t graph_get_adj_list(graph_t, unsigned int index);
+linked_list_t graph_get_adj_list(graph_t, unsigned int index);
 
 unsigned int graph_get_adj_list_length(graph_t, unsigned int index);
 
