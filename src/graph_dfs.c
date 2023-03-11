@@ -24,19 +24,19 @@ inline void add_non_visited_to_stack(dfs_state_t state, unsigned int vertex);
 
 inline unsigned int vertex_not_visited(dfs_state_t state, unsigned int vertex);
 
-inline unsigned int vertex_visited(dfs_state_t state, unsigned int vertex);
-
 inline dfs_state_t init_state(graph_t graph);
 
-inline void set_visited(dfs_state_t state, unsigned int vertex);
+inline void mark_as_visited(dfs_state_t state, unsigned int vertex);
 
 inline void push_to_stack(dfs_state_t state, unsigned int from, unsigned int to);
 
-inline unsigned int pop_from_stack(dfs_state_t state, unsigned int *popped_from, unsigned int *popped_to);
+inline unsigned int pop_next_vertex(dfs_state_t state, unsigned int *popped_from, unsigned int *popped_to);
 
 inline unsigned int state_stack_is_not_empty(dfs_state_t state);
 
-inline void add_sub_graph_edge(dfs_state_t state, unsigned int from, unsigned int to);
+inline void add_edge_sub_graph(dfs_state_t state, unsigned int from, unsigned int to);
+
+inline void add_to_path(dfs_state_t state, unsigned int vertex);
 
 dfs_state_t graph_dfs(graph_t graph, unsigned int start) {
     if (start >= graph_get_vertex_count(graph))
@@ -47,16 +47,16 @@ dfs_state_t graph_dfs(graph_t graph, unsigned int start) {
     unsigned int from;
     unsigned int current = start;
 
-    linked_list_append(state->path, current);
-    set_visited(state, current);
+    add_to_path(state, current);
+    mark_as_visited(state, current);
     add_non_visited_to_stack(state, current);
 
     while (state_stack_is_not_empty(state)) {
-        pop_from_stack(state, &from, &current);
-        linked_list_append(state->path, current);
-        set_visited(state, current);
+        pop_next_vertex(state, &from, &current);
+        add_to_path(state, current);
+        mark_as_visited(state, current);
         add_non_visited_to_stack(state, current);
-        add_sub_graph_edge(state, from, current);
+        add_edge_sub_graph(state, from, current);
     }
 
 
@@ -92,7 +92,7 @@ dfs_state_t init_state(graph_t graph) {
     return state;
 }
 
-void set_visited(dfs_state_t state, unsigned int vertex) {
+void mark_as_visited(dfs_state_t state, unsigned int vertex) {
     state->visited[vertex] = VISITED;
 }
 
@@ -105,7 +105,7 @@ unsigned int state_stack_is_not_empty(dfs_state_t state) {
     return stack_is_not_empty(state->stack_from);
 }
 
-unsigned int pop_from_stack(dfs_state_t state, unsigned int *popped_from, unsigned int *popped_to) {
+unsigned int pop_next_vertex(dfs_state_t state, unsigned int *popped_from, unsigned int *popped_to) {
     return
             stack_pop(state->stack_from, popped_from) &&
             stack_pop(state->stack_to, popped_to);
@@ -135,11 +135,11 @@ void dfs_state_print(dfs_state_t state) {
     graph_print(state->sub_graph);
 }
 
-void add_sub_graph_edge(dfs_state_t state, unsigned int from, unsigned int to) {
+void add_edge_sub_graph(dfs_state_t state, unsigned int from, unsigned int to) {
     if (graph_edge_exists(state->graph, from, to))
         graph_add_edge(state->sub_graph, from, to);
 }
 
-unsigned int vertex_visited(dfs_state_t state, unsigned int vertex) {
-    return !vertex_not_visited(state, vertex);
+void add_to_path(dfs_state_t state, unsigned int vertex) {
+    linked_list_append(state->path, vertex);
 }
