@@ -36,13 +36,13 @@ void interpret_line(graph_t graph, char *buffer) {
 
     token = strtok_r(buffer, " -> ", &save_ptr);
     unsigned long vertex = strtoul(token, &end_ptr, digit_base);
-    graph_increase_size(graph, vertex);
+    graph_increase_size(graph, vertex + 1);
 
     token = strtok_r(NULL, " -> ", &save_ptr);
     while (token != NULL) {
         unsigned int edge_vertex = strtoul(token, &end_ptr, digit_base);
         graph_increase_size(graph, edge_vertex + 1);
-        graph_add_edge(graph, edge_vertex, vertex);
+        graph_add_edge(graph, vertex, edge_vertex);
         token = strtok_r(NULL, " -> ", &save_ptr);
     }
 }

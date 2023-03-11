@@ -23,10 +23,12 @@ void linked_list_free(linked_list_t list);
 
 unsigned int linked_list_length(linked_list_t list);
 
-int linked_list_value_exists(linked_list_t node, unsigned int value);
+int linked_list_value_exists(linked_list_t list, unsigned int value);
 
 int linked_list_is_empty(linked_list_t list);
 
 int linked_list_is_not_empty(linked_list_t linked_list);
+
+linked_list_t linked_list_reverse(linked_list_t linked_list);
 
 #endif //LAB_1_LINKED_LIST_H

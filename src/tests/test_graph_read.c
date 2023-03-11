@@ -13,8 +13,10 @@ void test_graph_read() {
     graph_t graph = graph_read("../data/test");
     assert(graph != NULL);
     assert(graph_get_vertex_count(graph) == test_vertex_count);
+
+    graph_print(graph);
     assert(graph_get_adj_list_length(graph, 0) == 2);
-    assert(graph_get_adj_list_length(graph, 1) == 1);
+    assert(graph_get_adj_list_length(graph, 1) == 0);
     assert(graph_get_adj_list_length(graph, 2) == 2);
     assert(graph_get_adj_list_length(graph, 3) == 3);
     assert(graph_get_adj_list_length(graph, 4) == 2);
@@ -23,8 +25,6 @@ void test_graph_read() {
 
     assert(graph_edge_exists(graph, 0, 2));
     assert(graph_edge_exists(graph, 0, 1));
-
-    assert(graph_edge_exists(graph, 1, 0));
 
     assert(graph_edge_exists(graph, 2, 4));
     assert(graph_edge_exists(graph, 2, 0));
@@ -41,6 +41,5 @@ void test_graph_read() {
 
     assert(graph_edge_exists(graph, 6, 3));
 
-    graph_print(graph);
     graph_free(graph);
 }

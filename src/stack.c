@@ -10,7 +10,6 @@ struct stack_instance_t {
     linked_list_t head;
 };
 
-
 stack_t stack_create() {
     stack_t stack = malloc(sizeof *stack);
     stack->head = linked_list_create();
@@ -51,4 +50,8 @@ void stack_free(stack_t stack) {
 
     linked_list_free(stack->head);
     free(stack);
+}
+
+void stack_print(stack_t stack) {
+    linked_list_print(stack->head);
 }

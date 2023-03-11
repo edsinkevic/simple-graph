@@ -4,12 +4,20 @@
 
 #include <assert.h>
 #include <stddef.h>
+#include <time.h>
+#include <stdio.h>
 #include "test_graph_generate.h"
 #include "graph.h"
 #include "graph_generate.h"
 
 void test_graph_generate(unsigned int intended_vertex_count, unsigned int neighbor_min, unsigned int neighbor_max) {
+    clock_t t;
+    t = clock();
     graph_t graph = graph_generate(intended_vertex_count, neighbor_min, neighbor_max);
+    t = clock() - t;
+    double time_taken = ((double)t)/CLOCKS_PER_SEC; // in seconds
+    printf("%f seconds \n", time_taken);
+
     assert(graph != NULL);
     unsigned int vertex_count = graph_get_vertex_count(graph);
     assert(vertex_count == intended_vertex_count);
