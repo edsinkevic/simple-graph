@@ -44,12 +44,7 @@ void graph_add_edge(graph_t graph, unsigned int from, unsigned int to) {
 }
 
 void graph_print(graph_t graph) {
-    for (int i = 0; i < graph->vertices_count; i++) {
-        printf("Vertex %d: ", i);
-        linked_list_print(graph->adj_lists[i]);
-        printf("\n");
-    }
-    printf("\n");
+    graph_print_to_stream(graph, stdout);
 }
 
 unsigned int graph_get_vertex_count(graph_t graph) {
@@ -111,3 +106,11 @@ int graph_is_not_empty(graph_t graph) {
     return !graph_is_empty(graph);
 }
 
+void graph_print_to_stream(graph_t graph, FILE *stream) {
+    for (int i = 0; i < graph->vertices_count; i++) {
+        fprintf(stream, "Vertex %d: ", i);
+        linked_list_print_to_stream(graph->adj_lists[i], stream);
+        fprintf(stream, "\n");
+    }
+    fprintf(stream, "\n");
+}

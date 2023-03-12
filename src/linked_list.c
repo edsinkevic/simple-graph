@@ -32,10 +32,15 @@ void linked_list_append(linked_list_t list, unsigned int value) {
 }
 
 void linked_list_print(linked_list_t list) {
+    linked_list_print_to_stream(list, stdout);
+}
+
+
+void linked_list_print_to_stream(linked_list_t list, FILE *stream) {
     struct linked_list_node_instance_t *head = list->head;
     while (head != NULL) {
         char *format = head->next != NULL ? "%d -> " : "%d";
-        printf(format, head->value);
+        fprintf(stream, format, head->value);
         head = head->next;
     }
 }

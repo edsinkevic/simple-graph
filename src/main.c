@@ -15,7 +15,7 @@ int main() {
         test_graph_generate(100, 2, 50);
     }
 
-    //test_graph_generate(10000, 40, 500);
+    test_graph_generate(10000, 40, 500);
     test_graph_read();
 
     test_stack();

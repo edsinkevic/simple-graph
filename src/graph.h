@@ -7,6 +7,8 @@
 
 #include "linked_list.h"
 
+#include <stdio.h>
+
 typedef struct graph_instance_t *graph_t;
 
 graph_t graph_create(unsigned int size);
@@ -16,6 +18,8 @@ void graph_free(graph_t);
 void graph_add_edge(graph_t graph, unsigned int from, unsigned int to);
 
 void graph_print(graph_t);
+
+void graph_print_to_stream(graph_t, FILE *stream);
 
 unsigned int graph_get_vertex_count(graph_t);
 

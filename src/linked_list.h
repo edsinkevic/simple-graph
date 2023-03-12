@@ -5,6 +5,8 @@
 #ifndef LAB_1_LINKED_LIST_H
 #define LAB_1_LINKED_LIST_H
 
+#include <stdio.h>
+
 typedef struct linked_list_instance_t *linked_list_t;
 
 linked_list_t linked_list_create();
@@ -18,6 +20,8 @@ int linked_list_head(linked_list_t list);
 int linked_list_pop_head(linked_list_t list, unsigned int *popped);
 
 void linked_list_print(linked_list_t list);
+
+void linked_list_print_to_stream(linked_list_t list, FILE *stream);
 
 void linked_list_free(linked_list_t list);
 
