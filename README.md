@@ -1,6 +1,6 @@
 <h1 align="center">Simple graph DFS demonstration</h1>
 
-<p align="center">A C program generating a graph and applies DFS algorithm</p>
+<p align="center">A C program which generates a graph, applies DFS algorithm, writes the graph and resulting DFS subgraph to file</p>
 
 # How to run
 ## Build the executables lab_1 and lab_1_tests
