@@ -4,7 +4,8 @@ A C program which generates a graph, applies DFS algorithm, writes the graph and
 It takes the file paths as parameters, the required amount of vertices in the graph, the minimum and maximum amounts 
 of neighbors for each vertex, and, finally, a vertex index to start DFS from.
 
-Won't work on Windows, because the current implementation uses '/dev/random' file to generate random numbers.
+This will only work on Unix-like operating systems, 
+because the current implementation uses '/dev/random' file to generate random numbers.
 
 # How to run
 ## Build the executables lab_1 and lab_1_tests
