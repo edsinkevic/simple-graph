@@ -1,6 +1,8 @@
-<h1 align="center">Simple graph DFS demonstration</h1>
+# Simple graph depth-first search demonstration
+A C program which generates a graph, applies DFS algorithm, writes the graph and resulting DFS subgraph to respective files.
 
-<p align="center">A C program which generates a graph, applies DFS algorithm, writes the graph and resulting DFS subgraph to file</p>
+It takes the file paths as parameters, the required amount of vertices in the graph, the minimum and maximum amounts 
+of neighbors for each vertex, and, finally, a vertex index to start DFS from.
 
 # How to run
 ## Build the executables lab_1 and lab_1_tests
