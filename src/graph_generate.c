@@ -39,18 +39,14 @@ void fill_vertex(graph_t graph, unsigned int vertex_index, unsigned int neighbor
     unsigned int random_neighbor_count = random_number_between(neighbor_min, neighbor_max, dev_random_file_handle);
     unsigned int vertex_count = graph_get_vertex_count(graph);
     unsigned int last_vertex_index = vertex_count - 1;
+    unsigned int random_neighbor_vertex;
 
     for (unsigned int i = 0; i < random_neighbor_count; i++) {
-
-        unsigned int random_neighbor_vertex = random_number_between(0, last_vertex_index, dev_random_file_handle);
-        if (random_neighbor_vertex == vertex_index)
-            random_neighbor_vertex = vertex_index + 1 < vertex_count ? vertex_index + 1 : vertex_index - 1;
-
-        while (graph_edge_exists(graph, vertex_index, random_neighbor_vertex)) {
+        do {
             random_neighbor_vertex = random_number_between(0, last_vertex_index, dev_random_file_handle);
             if (random_neighbor_vertex == vertex_index)
                 random_neighbor_vertex = vertex_index + 1 < vertex_count ? vertex_index + 1 : vertex_index - 1;
-        }
+        } while (graph_edge_exists(graph, vertex_index, random_neighbor_vertex));
 
         graph_add_edge(graph, vertex_index, random_neighbor_vertex);
     }
