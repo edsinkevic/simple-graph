@@ -18,6 +18,8 @@ void test_graph_generate(unsigned int intended_vertex_count, unsigned int neighb
     double time_taken = ((double) t) / CLOCKS_PER_SEC; // in seconds
     printf("%f seconds \n", time_taken);
 
+    graph_print(graph);
+
     assert(graph != NULL);
     unsigned int vertex_count = graph_get_vertex_count(graph);
     assert(vertex_count == intended_vertex_count);
@@ -29,7 +31,7 @@ void test_graph_generate(unsigned int intended_vertex_count, unsigned int neighb
         assert(length >= neighbor_min);
     }
 
-    FILE *file = fopen("../data/test_write", "w");
+    FILE *file = fopen("../data/test_write", "w+");
     graph_print_to_stream(graph, file);
 
     graph_free(graph);

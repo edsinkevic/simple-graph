@@ -8,7 +8,7 @@
 #include "graph_read.h"
 
 
-void interpret_line(graph_t graph, char *buffer);
+inline void interpret_line(graph_t graph, char *buffer);
 
 graph_t graph_read(char *filename) {
     int buffer_length = 255;
@@ -31,18 +31,19 @@ graph_t graph_read(char *filename) {
 void interpret_line(graph_t graph, char *buffer) {
     char *end_ptr;
     char *save_ptr;
-    char *token;
+    char *from;
+    char *to;
     int digit_base = 10;
 
-    token = strtok_r(buffer, " -> ", &save_ptr);
-    unsigned long vertex = strtoul(token, &end_ptr, digit_base);
-    graph_increase_size(graph, vertex + 1);
+    from = strtok_r(buffer, " ", &save_ptr);
+    unsigned long vertex_from = strtoul(from, &end_ptr, digit_base);
 
-    token = strtok_r(NULL, " -> ", &save_ptr);
-    while (token != NULL) {
-        unsigned int edge_vertex = strtoul(token, &end_ptr, digit_base);
-        graph_increase_size(graph, edge_vertex + 1);
-        graph_add_edge(graph, vertex, edge_vertex);
-        token = strtok_r(NULL, " -> ", &save_ptr);
+    graph_increase_size(graph, vertex_from + 1);
+
+    to = strtok_r(NULL, " ", &save_ptr);
+
+    if (to != NULL) {
+        unsigned int vertex_to = strtoul(to, &end_ptr, digit_base);
+        graph_add_edge(graph, vertex_from, vertex_to);
     }
 }

@@ -31,15 +31,14 @@ void linked_list_append(linked_list_t list, unsigned int value) {
     list->head = node;
 }
 
-void linked_list_print(linked_list_t list) {
-    linked_list_print_to_stream(list, stdout);
+void linked_list_print(linked_list_t list, char *format) {
+    linked_list_print_to_stream(list, format, stdout);
 }
 
 
-void linked_list_print_to_stream(linked_list_t list, FILE *stream) {
+void linked_list_print_to_stream(linked_list_t list, char *format, FILE *stream) {
     struct linked_list_node_instance_t *head = list->head;
     while (head != NULL) {
-        char *format = head->next != NULL ? "%d -> " : "%d";
         fprintf(stream, format, head->value);
         head = head->next;
     }
@@ -69,7 +68,31 @@ int linked_list_head(linked_list_t list) {
     return linked_list_is_empty(list) ? -1 : list->head->value;
 }
 
+void linked_list_free_tails(linked_list_t list) {
+    if (list == NULL)
+        return;
+
+    for (int i = 0; i < list->tail_ptr_count; i++) {
+        linked_list_t tail = list->tails[i];
+
+        linked_list_free_tails(tail);
+        free(tail);
+        tail = NULL;
+    }
+
+    list->tail_ptr_count = 0;
+
+    linked_list_t *tails = list->tails;
+    free(tails);
+    tails = NULL;
+}
+
 void linked_list_free(linked_list_t list) {
+    if (list == NULL)
+        return;
+
+    linked_list_free_tails(list);
+
     struct linked_list_node_instance_t *temp;
     struct linked_list_node_instance_t *head = list->head;
     while (head != NULL) {
@@ -78,9 +101,8 @@ void linked_list_free(linked_list_t list) {
         free(temp);
     }
 
-    for (int i = 0; i < list->tail_ptr_count; i++) {
+    for (int i = 0; i < list->tail_ptr_count; i++)
         free(list->tails[i]);
-    }
 
     free(list);
 }

@@ -107,10 +107,11 @@ int graph_is_not_empty(graph_t graph) {
 }
 
 void graph_print_to_stream(graph_t graph, FILE *stream) {
+    char *str = malloc(13 * sizeof(*str));
+
     for (int i = 0; i < graph->vertices_count; i++) {
-        fprintf(stream, "Vertex %d: ", i);
-        linked_list_print_to_stream(graph->adj_lists[i], stream);
-        fprintf(stream, "\n");
+        sprintf(str, "%d %s {}\n", i, "%d");
+        linked_list_print_to_stream(graph->adj_lists[i], str, stream);
     }
     fprintf(stream, "\n");
 }

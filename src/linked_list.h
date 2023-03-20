@@ -19,9 +19,9 @@ int linked_list_head(linked_list_t list);
 
 int linked_list_pop_head(linked_list_t list, unsigned int *popped);
 
-void linked_list_print(linked_list_t list);
+void linked_list_print(linked_list_t list, char *format);
 
-void linked_list_print_to_stream(linked_list_t list, FILE *stream);
+void linked_list_print_to_stream(linked_list_t list, char *format, FILE *stream);
 
 void linked_list_free(linked_list_t list);
 

@@ -53,5 +53,5 @@ void stack_free(stack_t stack) {
 }
 
 void stack_print(stack_t stack) {
-    linked_list_print(stack->head);
+    linked_list_print(stack->head, "%d ->");
 }

@@ -20,7 +20,7 @@ struct dfs_state_instance_t {
 };
 
 
-inline void add_non_visited_to_stack(dfs_state_t state, unsigned int vertex);
+inline void add_non_visited_neighbors_to_stack(dfs_state_t state, unsigned int vertex);
 
 inline unsigned int vertex_not_visited(dfs_state_t state, unsigned int vertex);
 
@@ -49,13 +49,14 @@ dfs_state_t graph_dfs(graph_t graph, unsigned int start) {
 
     add_to_path(state, current);
     mark_as_visited(state, current);
-    add_non_visited_to_stack(state, current);
+    add_non_visited_neighbors_to_stack(state, current);
 
     while (state_stack_is_not_empty(state)) {
+        printf("%d\n", current);
         pop_next_vertex(state, &from, &current);
         add_to_path(state, current);
         mark_as_visited(state, current);
-        add_non_visited_to_stack(state, current);
+        add_non_visited_neighbors_to_stack(state, current);
         add_edge_sub_graph(state, from, current);
     }
 
@@ -63,7 +64,7 @@ dfs_state_t graph_dfs(graph_t graph, unsigned int start) {
     return state;
 }
 
-void add_non_visited_to_stack(dfs_state_t state, unsigned int vertex) {
+void add_non_visited_neighbors_to_stack(dfs_state_t state, unsigned int vertex) {
     linked_list_t list = graph_get_adj_list(state->graph, vertex);
     while (linked_list_is_not_empty(list)) {
         unsigned int head = linked_list_head(list);
@@ -128,7 +129,7 @@ void dfs_state_print(dfs_state_t state) {
     printf("\nVisited vertices: \n");
 
     linked_list_t reversed_path = linked_list_reverse(state->path);
-    linked_list_print(reversed_path);
+    linked_list_print(reversed_path, "%d -> ");
     linked_list_free(reversed_path);
 
     printf("\n");
