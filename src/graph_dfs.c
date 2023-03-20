@@ -52,7 +52,6 @@ dfs_state_t graph_dfs(graph_t graph, unsigned int start) {
     add_non_visited_neighbors_to_stack(state, current);
 
     while (state_stack_is_not_empty(state)) {
-        printf("%d\n", current);
         pop_next_vertex(state, &from, &current);
         add_to_path(state, current);
         mark_as_visited(state, current);

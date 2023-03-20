@@ -30,14 +30,20 @@ int main(int argc, char **argv) {
 
     start_clock();
     graph_t graph = graph_generate(args.vertex_count, args.neighbor_min, args.neighbor_max);
+    if (graph == NULL) {
+        printf("Graph cannot be generated from given parameters!\n");
+        return 1;
+    }
+
     stop_clock("Graph generation took %f seconds \n");
 
     start_clock();
     dfs_state_t result = graph_dfs(graph, args.start_vertex);
     stop_clock("DFS took %f seconds \n");
 
-    dfs_state_print(result);
+    //dfs_state_print(result);
 
+    graph_print_to_stream(graph, args.result_file);
     graph_print_to_stream(dfs_state_sub_graph(result), args.sub_graph_result_file);
 
     dfs_state_free(result);
