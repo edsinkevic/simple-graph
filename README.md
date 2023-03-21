@@ -9,19 +9,19 @@ because the current implementation uses '/dev/random' file to generate random nu
 
 # How to run
 ## Build the executables lab_1 and lab_1_tests
-```
+```bash
   cmake -B target &&\
   cd target &&\
   make
 ```
 
 ## Run lab_1
-```
+```bash
   target/lab_1 <result_file_path> <sub_graph_result_file_path> <vertex_count> <neighbor_min> <neighbor_max> <start_vertex>
 ```
 
 ## Run lab_1_read
-```
+```bash
   target/lab_1 <file_path> <start_vertex>
 ```
 
