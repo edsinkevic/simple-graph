@@ -20,6 +20,11 @@ because the current implementation uses '/dev/random' file to generate random nu
   target/lab_1 <result_file_path> <sub_graph_result_file_path> <vertex_count> <neighbor_min> <neighbor_max> <start_vertex>
 ```
 
+## Run lab_1_read
+```
+  target/lab_1 <file_path> <start_vertex>
+```
+
 ## Run lab_1_tests (TODO: right now the tests only work if you are in 'target' directory)
 ```
   cd target && \
