@@ -6,7 +6,7 @@
 #include "alternative/alt_graph_dfs.h"
 
 #define DECIMAL_BASE 10
-#define EXPECTED_ARG_COUNT 7
+#define EXPECTED_ARG_COUNT 8
 static clock_t GLOBAL_CLOCK;
 
 struct args {
@@ -16,6 +16,7 @@ struct args {
     unsigned int neighbor_min;
     unsigned int neighbor_max;
     unsigned int start_vertex;
+    char print;
 };
 
 inline void print_usage();
@@ -42,14 +43,17 @@ int main(int argc, char **argv) {
     dfs_state_t result = graph_dfs(graph, args.start_vertex);
     stop_clock("DFS took %f seconds \n");
 
-    dfs_state_print(result);
+    if (args.print)
+        dfs_state_print(result);
 
 
     start_clock();
     alt_dfs_state_t alt_result = alt_graph_dfs(graph, args.start_vertex);
     stop_clock("Simpler DFS took %f seconds \n");
 
-    alt_dfs_state_print(alt_result);
+
+    if (args.print)
+        alt_dfs_state_print(alt_result);
 
     graph_print_to_stream(graph, args.result_file);
     graph_print_to_stream(dfs_state_sub_graph(result), args.sub_graph_result_file);
@@ -70,7 +74,8 @@ void print_usage() {
            "<vertex_count> "
            "<neighbor_min> "
            "<neighbor_max> "
-           "<start_vertex>\n"
+           "<start_vertex> "
+           "<should_print>"
     );
 }
 
@@ -86,11 +91,13 @@ struct args construct_args(int argc, char **argv) {
     char *neighbor_min_str = argv[4];
     char *neighbor_max_str = argv[5];
     char *start_vertex_str = argv[6];
+    char *should_print_str = argv[7];
 
     unsigned int vertex_count = strtoul(vertex_count_str, NULL, DECIMAL_BASE);
     unsigned int neighbor_min = strtoul(neighbor_min_str, NULL, DECIMAL_BASE);
     unsigned int neighbor_max = strtoul(neighbor_max_str, NULL, DECIMAL_BASE);
     unsigned int start_vertex = strtoul(start_vertex_str, NULL, DECIMAL_BASE);
+    unsigned int should_print = strtoul(should_print_str, NULL, DECIMAL_BASE);
 
     FILE *result_file = fopen(result_file_path, "w+");
 
@@ -106,7 +113,15 @@ struct args construct_args(int argc, char **argv) {
         exit(1);
     }
 
-    struct args args = {result_file, subgraph_result_file, vertex_count, neighbor_min, neighbor_max, start_vertex};
+    struct args args = {
+            result_file,
+            subgraph_result_file,
+            vertex_count,
+            neighbor_min,
+            neighbor_max,
+            start_vertex,
+            should_print
+    };
 
     return args;
 }
