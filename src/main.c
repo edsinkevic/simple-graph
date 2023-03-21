@@ -3,6 +3,7 @@
 #include "graph_read.h"
 #include "graph_generate.h"
 #include "graph_dfs.h"
+#include "alternative/alt_graph_dfs.h"
 
 #define DECIMAL_BASE 10
 #define EXPECTED_ARG_COUNT 7
@@ -41,12 +42,20 @@ int main(int argc, char **argv) {
     dfs_state_t result = graph_dfs(graph, args.start_vertex);
     stop_clock("DFS took %f seconds \n");
 
-    //dfs_state_print(result);
+    dfs_state_print(result);
+
+
+    start_clock();
+    alt_dfs_state_t alt_result = alt_graph_dfs(graph, args.start_vertex);
+    stop_clock("Simpler DFS took %f seconds \n");
+
+    alt_dfs_state_print(alt_result);
 
     graph_print_to_stream(graph, args.result_file);
     graph_print_to_stream(dfs_state_sub_graph(result), args.sub_graph_result_file);
 
     dfs_state_free(result);
+    alt_dfs_state_free(alt_result);
     graph_free(graph);
     fclose(args.result_file);
     fclose(args.sub_graph_result_file);
