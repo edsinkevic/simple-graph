@@ -54,11 +54,9 @@ dfs_state_t graph_dfs(graph_t graph, unsigned int start) {
     while (state_stack_is_not_empty(state)) {
         pop_next_vertex(state, &from, &current);
         add_to_path(state, current);
-        mark_as_visited(state, current);
         add_non_visited_neighbors_to_stack(state, current);
         add_edge_sub_graph(state, from, current);
     }
-
 
     return state;
 }
@@ -68,6 +66,7 @@ void add_non_visited_neighbors_to_stack(dfs_state_t state, unsigned int vertex) 
     while (linked_list_is_not_empty(list)) {
         unsigned int head = linked_list_head(list);
         if (vertex_not_visited(state, head)) {
+            mark_as_visited(state, head);
             push_to_stack(state, vertex, head);
         }
         list = linked_list_tail(list);
@@ -132,7 +131,12 @@ void dfs_state_print(dfs_state_t state) {
     linked_list_free(reversed_path);
 
     printf("\n");
-    graph_print(state->sub_graph);
+    //graph_print(state->sub_graph);
+}
+
+void dfs_state_print_path(dfs_state_t state) {
+    linked_list_print(state->path, "%d -> ");
+    printf("\n");
 }
 
 void add_edge_sub_graph(dfs_state_t state, unsigned int from, unsigned int to) {

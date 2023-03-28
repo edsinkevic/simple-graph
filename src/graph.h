@@ -21,6 +21,8 @@ void graph_print(graph_t);
 
 void graph_print_to_stream(graph_t, FILE *stream);
 
+void graph_adj_list_print_to_stream(graph_t graph, FILE *stream, int skip_empty);
+
 unsigned int graph_get_vertex_count(graph_t);
 
 linked_list_t graph_get_adj_list(graph_t, unsigned int index);

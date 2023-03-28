@@ -10,6 +10,7 @@
 typedef struct dfs_state_instance_t *dfs_state_t;
 
 dfs_state_t graph_dfs(graph_t graph, unsigned int start);
+void dfs_state_print_path(dfs_state_t state);
 
 graph_t dfs_state_sub_graph(dfs_state_t state);
 

@@ -5,11 +5,13 @@
 #include "alternative/alt_graph_dfs.h"
 
 #define DECIMAL_BASE 10
-#define EXPECTED_ARG_COUNT 3
+#define EXPECTED_ARG_COUNT 4
 static clock_t GLOBAL_CLOCK;
 
 struct args {
     char *result_file;
+    FILE *dfs_result_file;
+    FILE *dfs_adj_list_result_file;
     unsigned int start_vertex;
 };
 
@@ -32,11 +34,14 @@ int main(int argc, char **argv) {
     }
     stop_clock("Graph generation took %f seconds \n");
 
-    graph_print(graph);
-
     start_clock();
     dfs_state_t result = graph_dfs(graph, args.start_vertex);
     stop_clock("DFS took %f seconds \n");
+
+    graph_t sub_graph = dfs_state_sub_graph(result);
+
+    graph_print_to_stream(sub_graph, args.dfs_result_file);
+    graph_adj_list_print_to_stream(sub_graph, args.dfs_adj_list_result_file, 1);
 
     start_clock();
     alt_dfs_state_t alt_result = alt_graph_dfs(graph, args.start_vertex);
@@ -54,6 +59,7 @@ int main(int argc, char **argv) {
 void print_usage() {
     printf("Usage: lab_1_read "
            "<file_path> "
+           "<dfs_result_file> "
            "<start_vertex> "
     );
 }
@@ -65,12 +71,20 @@ struct args construct_args(int argc, char **argv) {
     }
 
     char *file_path = argv[1];
-    char *start_vertex_str = argv[2];
+    char *dfs_result_file = argv[2];
+    char *start_vertex_str = argv[3];
+    char *dfs_adj_list_result_file = malloc(100 * sizeof * dfs_adj_list_result_file);
+    sprintf(dfs_adj_list_result_file, "%s" ".adjlist", dfs_result_file);
 
     unsigned int start_vertex = strtoul(start_vertex_str, NULL, DECIMAL_BASE);
 
+    FILE *f = fopen(dfs_result_file, "w+");
+    FILE *f_adj_list = fopen(dfs_adj_list_result_file, "w+");
+
     struct args args = {
             file_path,
+            f,
+            f_adj_list,
             start_vertex
     };
 

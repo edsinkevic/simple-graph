@@ -12,6 +12,7 @@ static clock_t GLOBAL_CLOCK;
 struct args {
     FILE *result_file;
     FILE *sub_graph_result_file;
+    FILE *adj_list_result_file;
     unsigned int vertex_count;
     unsigned int neighbor_min;
     unsigned int neighbor_max;
@@ -51,11 +52,12 @@ int main(int argc, char **argv) {
     alt_dfs_state_t alt_result = alt_graph_dfs(graph, args.start_vertex);
     stop_clock("Simpler DFS took %f seconds \n");
 
-
     if (args.print)
         alt_dfs_state_print(alt_result);
 
     graph_print_to_stream(graph, args.result_file);
+
+    graph_adj_list_print_to_stream(graph, args.adj_list_result_file, 0);
     graph_print_to_stream(dfs_state_sub_graph(result), args.sub_graph_result_file);
 
     dfs_state_free(result);
@@ -99,6 +101,7 @@ struct args construct_args(int argc, char **argv) {
     unsigned int start_vertex = strtoul(start_vertex_str, NULL, DECIMAL_BASE);
     unsigned int should_print = strtoul(should_print_str, NULL, DECIMAL_BASE);
 
+
     FILE *result_file = fopen(result_file_path, "w+");
 
     if (result_file == NULL) {
@@ -113,9 +116,15 @@ struct args construct_args(int argc, char **argv) {
         exit(1);
     }
 
+    char *pretty_result_file = malloc(100 * sizeof * pretty_result_file);
+    sprintf(pretty_result_file, "%s" ".adjlist", result_file_path);
+
+    FILE *adj_list_result_file = fopen(pretty_result_file, "w+");
+
     struct args args = {
             result_file,
             subgraph_result_file,
+            adj_list_result_file,
             vertex_count,
             neighbor_min,
             neighbor_max,

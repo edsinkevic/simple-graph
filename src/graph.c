@@ -113,5 +113,21 @@ void graph_print_to_stream(graph_t graph, FILE *stream) {
         sprintf(str, "%d %s {}\n", i, "%d");
         linked_list_print_to_stream(graph->adj_lists[i], str, stream);
     }
+
+    fprintf(stream, "\n");
+
+    free(str);
+}
+
+void graph_adj_list_print_to_stream(graph_t graph, FILE *stream, int skip_empty) {
+
+    for (int i = 0; i < graph->vertices_count; i++) {
+        if (skip_empty && linked_list_is_empty(graph_get_adj_list(graph, i)))
+            continue;
+        fprintf(stream, "Vertex %d: ", i);
+        linked_list_print_to_stream(graph->adj_lists[i], "%d ", stream);
+        fprintf(stream, "\n");
+    }
+
     fprintf(stream, "\n");
 }

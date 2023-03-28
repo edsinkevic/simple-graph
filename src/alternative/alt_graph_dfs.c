@@ -47,12 +47,13 @@ alt_dfs_state_t alt_graph_dfs(graph_t graph, unsigned int start) {
     alt_add_non_visited_neighbors_to_stack(state, current);
 
     while (alt_state_stack_is_not_empty(state)) {
-//        printf("%d: ", current);
-//        stack_print(state->stack);
-//        printf("\n");
+#if 0
+        printf("%d: ", current);
+        stack_print(state->stack);
+        printf("\n");
+#endif
         alt_pop_next_vertex(state, &current);
         alt_add_to_path(state, current);
-        alt_mark_as_visited(state, current);
         alt_add_non_visited_neighbors_to_stack(state, current);
     }
 
@@ -65,6 +66,7 @@ void alt_add_non_visited_neighbors_to_stack(alt_dfs_state_t state, unsigned int 
     while (linked_list_is_not_empty(list)) {
         unsigned int head = linked_list_head(list);
         if (alt_vertex_not_visited(state, head)) {
+            alt_mark_as_visited(state, head);
             alt_push_to_stack(state, head);
         }
         list = linked_list_tail(list);
@@ -123,7 +125,7 @@ void alt_dfs_state_print(alt_dfs_state_t state) {
 
 void alt_add_to_path(alt_dfs_state_t state, unsigned int vertex) {
     //if(!linked_list_value_exists(state->path, vertex))
-        linked_list_append(state->path, vertex);
+    linked_list_append(state->path, vertex);
 }
 
 linked_list_t alt_dfs_state_path(alt_dfs_state_t state) {
